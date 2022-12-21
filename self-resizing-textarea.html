@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self-Resizing Textarea</title>
+  <style>
+    :root {
+      font-family: sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }
+    :focus {
+      outline: none;
+    }
+    :not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .textarea {
+      /*
+      * styled a wrapper because i'm lazy :)
+      * it's easier than having to deal with
+      * scrollHeight, plus padding, border and
+      * whatever...
+      */
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 1rem;
+    }
+    textarea {
+      min-height: 3rem;
+      max-height: 75vh;
+      width: 50vw;
+      font-size: .875rem;
+      line-height: 1.5;
+      resize: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>This b*tch be resizing itself...</h1>
+  <div class="textarea">
+    <textarea>It all starts with a min-height, but then you type... and you type... until, eventually, you reach the max-height. Then, and only then, it starts to scroll...</textarea>
+  </div>
+  <p>resize is handle disabled, because... and here's the <a href="https://github.com/cdeath/cdeath.github.io/blob/master/self-resizing-textarea.html">code</a></p>
+  <script>
+    var textarea = document.querySelector('textarea');
+
+    function resize() {
+      /* reset the height... because backspace */
+      textarea.style.height = 0;
+      /* set the textarea height equal to it's scrollHeight */
+      textarea.style.height = textarea.scrollHeight + 'px';
+    };
+
+    /* place cursor at the end */
+    textarea.value = '';
+    textarea.focus();
+    textarea.value = textarea.textContent;
+
+    /* resize on input */
+    textarea.addEventListener('input', resize);
+
+    /* resize on init */
+    resize();
+  </script>
+</body>
+</html>

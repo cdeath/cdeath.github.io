@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>text-overflow: &lt;string&gt;</title>
+  <style>
+    :root {
+      font-family: sans-serif;
+    }
+    *, ::before, ::after {
+      box-sizing: border-box;
+    }
+    body {
+      overflow-x: hidden;
+    }
+    h1, h2, h3 {
+      margin-bottom: 2rem;
+    }
+    p, img {
+      margin: 0 0 1rem;
+    }
+    img {
+      display: block;
+      max-width: 100%;
+    }
+    code {
+      display: inline-block;
+      vertical-align: middle;
+      padding: .125rem .25rem;
+      font-size: 1rem;
+      background: #eee;
+      border: 1px solid #999;
+      border-radius: 2px;
+    }
+    .max-width {
+      max-width: 20rem;
+      margin-bottom: 1rem;
+    }
+    .max-width p {
+      padding: .25rem 0;
+      margin-bottom: 0;
+      border: 1px solid #ccc;
+    }
+    [data-text-overflow] {
+      display: flex;
+      align-items: center;
+    }
+    .text-overflow span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .text-overflow::after {
+      content: attr(data-text-overflow);
+    }
+  </style>
+</head>
+<body>
+  <h1>text-overflow: &lt;string&gt; polyfill<em>-ish</em></h1>
+  <p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#browser_compatibility" target="_blank" rel="noreferrer">MDN</a> says it's only currently supported on firefox 😭<br>
+    ...but as they say... if you can't make it, fake it! 😎
+  </p>
+  <br>
+  <h2>Demo with <code>?</code></h2>
+  <div class="max-width">
+    <p><span>averyveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryverylongstringwith?</span></p>
+    <img src="assets/images/drake_disapproves.jpg" alt="Drake disapproves..." width="200">
+  </div>
+  <div class="max-width">
+    <p data-text-overflow="?"><span>averyveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryveryverylongstring?</span></p>
+    <img src="assets/images/drake_approves.jpg" alt="Drake approves..." width="200">
+  </div>
+  <br>
+  <p>but what if the string is short?</p>
+  <div class="max-width">
+    <p data-text-overflow="?"><span>ashortstringwith?</span></p>
+  </div>
+  <p>well... if it's short, it's short! there's nothing you can do about it... 🙄</p>
+  <br>
+  <h3>Usage:</h3>
+  <ol>
+    <li><p>wrap the string in a <code>&lt;span&gt;</code></p></li>
+    <li><p>add <code>data-text-overflow="{whatever}"</code> with the character you want to the <code>&lt;span&gt;</code>'s <strong>parent element</strong> (because you don't want the pseudo-element to be clipped along with the string)</p></li>
+    <li><p>the <code>max-width</code> can be defined somewhere up the tree, (e.g. a modal container)</p></li>
+    <li><p></p>this uses javascript (&mdash; "<em>use the <a href="https://github.com/cdeath/cdeath.github.io/blob/master/text-overflow-string.html" target="_blank" rel="noreferrer">source</a> Luke...</em>")</p></li>
+    <li>
+      <p>run it when needed and attach it to a <code>resize</code> event listener if you want to make it...</p>
+      <p><img src="assets/images/drevil_responsive.jpg" alt="Dr. Evil air quotes responsive" width="400"></p>
+    </li>
+    <li><p>in React <code>useRef()</code> 🥁 to target the element and then <code>useState()</code>, <code>useEffect()</code> hooks instead of <code>classList.toggle()</code></p></li>
+  </ol>
+  <br>
+  <p>that's it... if you don't like it... cry me a river on <a href="https://github.com/cdeath/cdeath.github.io/issues" target="_blank" rel="noreferrer">GitHub</a>. I'll try to come up with something else later...</p>
+  <script>
+    // now for some magic
+    function textOverflow(elm) {
+      elm.classList.toggle('text-overflow', elm.scrollWidth > elm.offsetWidth);
+    }
+    // runs only once
+    document.querySelectorAll('[data-text-overflow]').forEach(textOverflow);
+    // but you can attach this to a `resize` event listener to make it "responsive" 😬
+    // in React useRef() 🥁 to target the element
+  </script>
+</body>
+</html>

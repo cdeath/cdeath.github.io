@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Dataset by NameSpace</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: monospace;
+      padding: 1rem;
+    }
+    body > * {
+      margin-bottom: 1rem;
+    }
+    p {
+      font-weight: bold;
+    }
+    pre {
+      padding: 1rem;
+      background: #ddd;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Filter Dataset by NameSpace</h1>
+  <p>html:</p>
+  <pre>&lt;script data-whatever data-ns1-number="1" data-ns1-string="foo" data-ns1-boolean="true" data-ns2-number="3.5" data-ns2-string="bar" data-ns2-boolean="false" data-lebowsky-the-dude="abides"&gt;&lt;/script&gt;</pre>
+  <p>js:</p>
+  <pre>var elm = document.querySelector('[data-whatever]');
+
+console.log(getDataset(elm));
+// unfiltered dataset
+// {ns: '', ns1Number: '1', ns1String: 'foo', ns1Boolean: 'true', ns2Number: '3.5', ..., lebowskyTheDude: 'abides'}
+
+console.log(getDataset(elm, 'ns1'));
+// dataset filtered by 'ns1'
+// {number: '1', string: 'foo', boolean: 'true'}
+
+console.log(getDataset(elm, 'ns2'));
+// dataset filtered by 'ns2'
+// {number: '3.5', string: 'bar', boolean: 'false'}
+
+console.log(getDataset(elm, 'ns2', true));
+// dataset filtered by 'ns2' with primitive values
+// {number: 3.5, string: 'bar', boolean: false}
+
+console.log(getDataset(elm, 'lebowsky'));
+// {theDude: 'abides'}</pre>
+
+  <p>use the source luke...<br>open the console...</p>
+
+  <script data-whatever data-ns1-number="1" data-ns1-string="foo" data-ns1-boolean="true" data-ns2-number="3.5" data-ns2-string="bar" data-ns2-boolean="false" data-lebowsky-the-dude="abides"></script>
+
+  <script>
+    function toPrimitive(val) {
+      if (val === 'null') return null;
+      if (val === 'true') return true;
+      if (val === 'false') return false;
+      if (val === 'undefined') return undefined;
+      if (!isNaN(val)) return parseFloat(val);
+      return val;
+    }
+
+    function lcFirst(str) {
+      return str.slice(0, 1).toLowerCase() + str.slice(1);
+    }
+
+    function getDataset(elm, ns, p) {
+      var data = {...elm.dataset};
+      return ns ? Object.entries(data).reduce(function(acc, [key, val]) {
+        if (key.indexOf(ns) === 0) acc[lcFirst(key.replace(ns, ''))] = p ? toPrimitive(val) : val;
+        return acc;
+      }, {}) : data;
+    }
+
+    var elm = document.querySelector('[data-whatever]');
+    console.log(getDataset(elm)); // default dataset with all attributes
+    console.log(getDataset(elm, 'ns1')); // dataset filtered by namespace 1
+    console.log(getDataset(elm, 'ns2')); // dataset filtered by namespace 2
+    console.log(getDataset(elm, 'ns2', true)); // dataset filtered by namespace 1 with primitive values
+    console.log(getDataset(elm, 'lebowsky'));
+  </script>
+</body>
+</html>
