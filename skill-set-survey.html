@@ -22,10 +22,6 @@
     main {
       flex: 1;
     }
-    main > * + *,
-    form > * + * {
-      margin-top: 1rem;
-    }
     table {
       border-collapse: collapse;
       width: 100%;
@@ -59,15 +55,20 @@
     body, label {
       display: flex;
     }
-    h1, th, td, th input {
-      text-align: center;
-    }
     main, aside, pre {
       padding: 1rem;
+    }
+    main > * + *,
+    form > * + *,
+    aside > * + * {
+      margin-top: 1rem;
     }
     input[type=text], label {
       width: 100%;
       height: 100%;
+    }
+    h1, th, td, th input {
+      text-align: center;
     }
     .actions {
       text-align: right;
