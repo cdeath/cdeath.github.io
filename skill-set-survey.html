@@ -17,21 +17,14 @@
     body {
       min-height: 100%;
       font-family: sans-serif;
-    }
-    body {
-      display: flex;
+      flex-direction: column;
     }
     main {
       flex: 1;
-      padding: 1rem;
     }
-    main > * + *, form > * + * {
+    main > * + *,
+    form > * + * {
       margin-top: 1rem;
-    }
-    aside {
-      padding: 1rem;
-      width: 500px;
-      border-left: 1px solid #aaa;
     }
     table {
       border-collapse: collapse;
@@ -39,22 +32,15 @@
     }
     td, th {
       border: 1px solid #aaa;
-      text-align: center;
       height: 2rem;
     }
     th input {
-      text-align: center;
       font-weight: bold;
     }
     input[type=text] {
-      width: 100%;
-      height: 100%;
       padding: 0 .5rem;
     }
     label {
-      display: flex;
-      width: 100%;
-      height: 100%;
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -63,21 +49,43 @@
       width: 2rem;
       height: 2rem;
     }
-    .actions {
-      text-align: right;
-    }
     hr {
       height: 1px;
       background-color: #aaa;
     }
     pre {
       background: #f0f0f0;
+    }
+    body, label {
+      display: flex;
+    }
+    h1, th, td, th input {
+      text-align: center;
+    }
+    main, aside, pre {
       padding: 1rem;
+    }
+    input[type=text], label {
+      width: 100%;
+      height: 100%;
+    }
+    .actions {
+      text-align: right;
+    }
+    @media (min-width: 1024px) {
+      body {
+        flex-direction: row;
+      }
+      aside {
+        width: 500px;
+        border-left: 1px solid #aaa;
+      }
     }
   </style>
 </head>
 <body>
   <main>
+    <h1>Skill Set Survey</h1>
     <hr>
     <div class="actions">
       <button type="button" name="remove-form">-</button>
