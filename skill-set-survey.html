@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radar Chart Survey</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      box-sizing: border-box;
+    }
+    html {
+      height: 100%;
+    }
+    body {
+      min-height: 100%;
+      font-family: sans-serif;
+    }
+    body {
+      display: flex;
+    }
+    main {
+      flex: 1;
+      padding: 1rem;
+    }
+    main > * + *, form > * + * {
+      margin-top: 1rem;
+    }
+    aside {
+      padding: 1rem;
+      width: 500px;
+      border-left: 1px solid #aaa;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td, th {
+      border: 1px solid #aaa;
+      text-align: center;
+      height: 2rem;
+    }
+    th input {
+      text-align: center;
+      font-weight: bold;
+    }
+    input[type=text] {
+      width: 100%;
+      height: 100%;
+      padding: 0 .5rem;
+    }
+    label {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    button {
+      width: 2rem;
+      height: 2rem;
+    }
+    .actions {
+      text-align: right;
+    }
+    hr {
+      height: 1px;
+      background-color: #aaa;
+    }
+    pre {
+      background: #f0f0f0;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <hr>
+    <div class="actions">
+      <button type="button" name="remove-form">-</button>
+      <button type="button" name="add-form">+</button>
+    </div>
+  </main>
+  <aside>
+    <canvas id="chart"></canvas>
+    <pre></pre>
+  </aside>
+  <template id="form">
+    <form>
+      <table>
+        <thead>
+          <tr><th colspan="7"><input type="text"></th></tr>
+          <tr>
+            <th></th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="actions">
+        <button type="button" name="remove-fieldset">-</button>
+        <button type="button" name="add-fieldset">+</button>
+      </div>
+    </form>
+  </template>
+  <template id="fieldset">
+    <tr>
+      <td><input type="text"></td>
+      <td><input type="radio" value="1"></td>
+      <td><input type="radio" value="2"></td>
+      <td><input type="radio" value="3" checked></td>
+      <td><input type="radio" value="4"></td>
+      <td><input type="radio" value="5"></td>
+    </tr>
+  </template>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    ((d) => {
+      const qs = (s, e) => (e || d).querySelector(s),
+            qsa = (s, e) => [...(e || d).querySelectorAll(s)],
+            main = qs('main'),
+            aside = qs('aside'),
+            hr = qs('hr');
+
+      const chart = new Chart(qs('#chart'), {
+        type: 'radar',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Skills',
+              data: [],
+            }
+          ]
+        },
+        options: {
+          elements: {
+            line: {
+              borderWidth: 3
+            }
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 5,
+              ticks: {
+                count: 5,
+                stepSize: 1,
+              }
+            }
+          },
+        },
+      });
+
+      function updateChart() {
+        chart.data.labels = qsa('thead input').map(input => input.value);
+        chart.data.datasets[0].data = [...d.forms].reduce((data, form, formIndex) => {
+          const rows = qsa('tbody tr', form);
+          const average = rows.reduce((sum, row, rowIndex) => {
+            const name = `${formIndex}-${rowIndex}`,
+                  value = form.elements[name].value|0;
+            return sum + value;
+          }, 0) / rows.length
+          return [...data, +average.toFixed(2)];
+        }, []);
+        qs('pre').innerHTML = JSON.stringify(chart.data, null, 2);
+        chart.update();
+      }
+
+      function addFieldset(form) {
+        const rows = qsa('tbody tr', form),
+              index = rows.length,
+              fragment = qs('#fieldset').content.cloneNode(true),
+              input = qs('input[type=text]', fragment),
+              radios = qsa('input[type=radio]', fragment);
+
+        input.value = `Skill ${index + 1}`;
+        radios.forEach(r => r.name = `${form.name}-${index}`);
+        qs('tbody', form).appendChild(fragment);
+        updateChart();
+      }
+
+      function removeFieldset(form) {
+        const rows = qsa('tbody tr', form),
+              row = [...rows].pop();
+
+        rows.length > 1 ? row.parentElement.removeChild(row) : removeForm(form);
+        updateChart();
+      }
+
+      function addForm() {
+        const index = d.forms.length,
+              fragment = qs('#form').content.cloneNode(true),
+              form = qs('form', fragment),
+              input = qs('input[type=text]', form);
+
+        form.name = index;
+        input.value = `Skill Set ${index + 1}`;
+        addFieldset(form);
+        main.insertBefore(fragment, hr);
+        updateChart();
+      }
+
+      function removeForm(form) {
+        form.parentElement.removeChild(form);
+        updateChart();
+      }
+
+      d.body.addEventListener('click', ({ target }) => {
+        target.matches('[name=add-form]') && addForm();
+        target.matches('[name=remove-form]') && removeForm([...d.forms].pop());
+        target.matches('[name=add-fieldset]') && addFieldset(target.closest('form'));
+        target.matches('[name=remove-fieldset]') && removeFieldset(target.closest('form'));
+        target.matches('[type=radio]') && updateChart();
+      });
+
+      d.body.addEventListener('input', ({ target }) => {
+        target.matches('input[type=text]') && updateChart();
+      });
+
+      [...Array(5)].forEach(() => addForm());
+      updateChart();
+
+    })(document);
+  </script>
+</body>
+</html>
