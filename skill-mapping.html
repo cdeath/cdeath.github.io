@@ -21,14 +21,17 @@
     }
     main {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
     table {
       border-collapse: collapse;
       width: 100%;
     }
     td, th {
-      border: 1px solid #aaa;
       height: 2rem;
+      border: 1px solid #bbb;
     }
     th input {
       font-weight: bold;
@@ -39,7 +42,6 @@
     label {
       align-items: center;
       justify-content: center;
-      cursor: pointer;
     }
     button {
       width: 2rem;
@@ -47,7 +49,7 @@
     }
     hr {
       height: 1px;
-      background-color: #aaa;
+      background-color: #bbb;
     }
     pre {
       background: #f0f0f0;
@@ -58,7 +60,6 @@
     main, aside, pre {
       padding: 1rem;
     }
-    main > * + *,
     form > * + *,
     aside > * + * {
       margin-top: 1rem;
@@ -67,7 +68,10 @@
       width: 100%;
       height: 100%;
     }
-    h1, p, th, td, th input {
+    label, input[type=radio] {
+      cursor: pointer;
+    }
+    h1, p, th, td {
       text-align: center;
     }
     p {
@@ -78,6 +82,9 @@
       font-size: 2rem;
       vertical-align: middle;
     }
+    small {
+      margin-top: auto;
+    }
     .actions {
       text-align: right;
     }
@@ -87,7 +94,7 @@
       }
       aside {
         width: 500px;
-        border-left: 1px solid #aaa;
+        border-left: 1px solid #bbb;
       }
     }
   </style>
@@ -101,6 +108,7 @@
       <button type="button" name="remove-form">-</button>
       <button type="button" name="add-form">+</button>
     </div>
+    <small><strong>PS:</strong> Data is not kept (yet). Open an <a href="https://github.com/cdeath/cdeath.github.io/issues" target="_blank" rel="no-referrer">issue</a> if you think it's worth it.</small>
   </main>
   <aside>
     <canvas id="chart"></canvas>
@@ -110,9 +118,8 @@
     <form>
       <table>
         <thead>
-          <tr><th colspan="7"><input type="text"></th></tr>
           <tr>
-            <th></th>
+            <th><input type="text"></th>
             <th>1</th>
             <th>2</th>
             <th>3</th>
@@ -131,11 +138,11 @@
   <template id="fieldset">
     <tr>
       <td><input type="text"></td>
-      <td><input type="radio" value="1"></td>
-      <td><input type="radio" value="2"></td>
-      <td><input type="radio" value="3" checked></td>
-      <td><input type="radio" value="4"></td>
-      <td><input type="radio" value="5"></td>
+      <td><label><input type="radio" value="1"></label></td>
+      <td><label><input type="radio" value="2"></label></td>
+      <td><label><input type="radio" value="3" checked></label></td>
+      <td><label><input type="radio" value="4"></label></td>
+      <td><label><input type="radio" value="5"></label></td>
     </tr>
   </template>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -151,28 +158,25 @@
         type: 'radar',
         data: {
           labels: [],
-          datasets: [
-            {
-              label: 'Skills',
-              data: [],
-            }
-          ]
+          datasets: [{ data: [] }],
         },
         options: {
           elements: {
-            line: {
-              borderWidth: 3
-            }
+            line: { borderWidth: 3 },
           },
           scales: {
             r: {
               min: 0,
               max: 5,
-              ticks: {
-                count: 5,
-                stepSize: 1,
-              }
-            }
+              ticks: { count: 5, stepSize: 1 },
+              pointLabels: {
+                font: { size: 14, weight: 'bold' },
+                color: 'black',
+              },
+            },
+          },
+          plugins: {
+            legend: { display: false },
           },
         },
       });
