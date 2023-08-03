@@ -31,6 +31,7 @@
     }
     td, th {
       height: 2rem;
+      min-width: 2rem;
       border: 1px solid #bbb;
     }
     th input {
@@ -166,7 +167,7 @@
           },
           scales: {
             r: {
-              min: 1,
+              min: 0,
               max: 5,
               ticks: { count: 5, stepSize: 1 },
               pointLabels: {
