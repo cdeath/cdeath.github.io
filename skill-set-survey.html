@@ -170,10 +170,10 @@
 
       function updateChart() {
         chart.data.labels = qsa('thead input').map(input => input.value);
-        chart.data.datasets[0].data = [...d.forms].reduce((data, form, formIndex) => {
+        chart.data.datasets[0].data = [...d.forms].reduce((data, form) => {
           const rows = qsa('tbody tr', form);
           const average = rows.reduce((sum, row, rowIndex) => {
-            const name = `${formIndex}-${rowIndex}`,
+            const name = `${form.name}-${rowIndex}`,
                   value = form.elements[name].value|0;
             return sum + value;
           }, 0) / rows.length
