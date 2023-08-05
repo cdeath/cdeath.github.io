@@ -11,6 +11,10 @@
       border: 0;
       box-sizing: border-box;
     }
+    button {
+      cursor: pointer;
+      background: transparent;
+    }
     html {
       height: 100%;
     }
@@ -31,8 +35,11 @@
     }
     td, th {
       height: 2rem;
-      min-width: 2rem;
+      min-width: 2.5rem;
       border: 1px solid #bbb;
+    }
+    th:first-child {
+      width: 100%;
     }
     th input {
       font-weight: bold;
@@ -43,10 +50,6 @@
     label {
       align-items: center;
       justify-content: center;
-    }
-    button {
-      width: 2rem;
-      height: 2rem;
     }
     hr {
       height: 1px;
@@ -85,16 +88,21 @@
     }
     small {
       margin-top: auto;
+      line-height: 1.5;
     }
     .actions {
       text-align: right;
+    }
+    .button {
+      padding: .5rem 1rem;
+      background-color: #eee;
     }
     @media (min-width: 1024px) {
       body {
         flex-direction: row;
       }
       aside {
-        width: 500px;
+        width: 550px;
         border-left: 1px solid #bbb;
       }
     }
@@ -106,44 +114,47 @@
     <p><strong>TL;DR:</strong> Skill sets and skill names are editable. Use one skill for single score or add more for averages. Have fun! <i>😎</i></p>
     <hr>
     <div class="actions">
-      <button type="button" name="remove-form">-</button>
-      <button type="button" name="add-form">+</button>
+      <button type="button" name="add-skillset" class="button">Add skill set</button>
     </div>
-    <small><strong>PS:</strong> Data is not persisted (yet). Open an <a href="https://github.com/cdeath/cdeath.github.io/issues" target="_blank" rel="no-referrer">issue</a> if you think it's worth it.</small>
+    <small>
+      Inspired by this <a href="https://www.nngroup.com/articles/skill-mapping/" target="_blank" rel="no-referrer">article</a>.</br>
+      <strong>PS:</strong> Data is not persisted (yet). Open an <a href="https://github.com/cdeath/cdeath.github.io/issues" target="_blank" rel="no-referrer">issue</a> if you think it's worth it.
+    </small>
   </main>
   <aside>
     <canvas id="chart"></canvas>
     <pre></pre>
   </aside>
-  <template id="form">
-    <form>
+  <template id="skillset">
+    <form class="skillset">
       <table>
         <thead>
           <tr>
-            <th><input type="text"></th>
+            <th><input type="text" name="skillset" placeholder="Skill set"></th>
             <th>1</th>
             <th>2</th>
             <th>3</th>
             <th>4</th>
             <th>5</th>
+            <th><button type="button" name="remove-skillset" title="Remove Skill Set">🗑</button></th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody class="skills"></tbody>
       </table>
       <div class="actions">
-        <button type="button" name="remove-fieldset">-</button>
-        <button type="button" name="add-fieldset">+</button>
+        <button type="button" name="add-skill" class="button">Add Skill</button>
       </div>
     </form>
   </template>
-  <template id="fieldset">
-    <tr>
-      <td><input type="text"></td>
+  <template id="skill">
+    <tr class="skill">
+      <td><input type="text" name="skill" placeholder="Skill"></td>
       <td><label><input type="radio" value="1"></label></td>
       <td><label><input type="radio" value="2"></label></td>
       <td><label><input type="radio" value="3" checked></label></td>
       <td><label><input type="radio" value="4"></label></td>
       <td><label><input type="radio" value="5"></label></td>
+      <td><button type="button" name="remove-skill" title="Remove Skill">🗑</button></td>
     </tr>
   </template>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -182,10 +193,10 @@
         },
       });
 
-      function updateChart() {
-        chart.data.labels = qsa('thead input').map(input => input.value);
-        chart.data.datasets[0].data = [...d.forms].reduce((data, form) => {
-          const rows = qsa('tbody tr', form);
+      function updateChart(what = ['labels', 'data']) {
+        if (what.includes('labels')) chart.data.labels = qsa('[name=skillset]').map(input => input.value.split(' '));
+        if (what.includes('data')) chart.data.datasets[0].data = [...d.forms].reduce((data, form) => {
+          const rows = qsa('.skill', form);
           const average = rows.reduce((sum, row, rowIndex) => {
             const name = `${form.name}-${rowIndex}`,
                   value = form.elements[name].value|0;
@@ -197,58 +208,55 @@
         chart.update();
       }
 
-      function addFieldset(form) {
-        const rows = qsa('tbody tr', form),
+      function addSkill(skillset) {
+        const rows = qsa('.skill', skillset),
               index = rows.length,
-              fragment = qs('#fieldset').content.cloneNode(true),
-              input = qs('input[type=text]', fragment),
-              radios = qsa('input[type=radio]', fragment);
+              skill = qs('#skill').content.cloneNode(true).firstElementChild,
+              radios = qsa('input[type=radio]', skill);
 
-        input.value = `Skill ${index + 1}`;
-        radios.forEach(r => r.name = `${form.name}-${index}`);
-        qs('tbody', form).appendChild(fragment);
+        radios.forEach(r => r.name = `${skillset.name}-${index}`);
+        qs('.skills', skillset).appendChild(skill);
         updateChart();
       }
 
-      function removeFieldset(form) {
-        const rows = qsa('tbody tr', form),
-              row = [...rows].pop();
+      function removeSkill(skillset) {
+        const skills = qsa('.skill', skillset),
+              skill = [...skills].pop();
 
-        rows.length > 1 ? row.parentElement.removeChild(row) : removeForm(form);
+        skills.length > 1 ? skill.parentElement.removeChild(skill) : removeSkillSet(skillset);
         updateChart();
       }
 
-      function addForm() {
+      function addSkillSet(name) {
         const index = d.forms.length,
-              fragment = qs('#form').content.cloneNode(true),
-              form = qs('form', fragment),
-              input = qs('input[type=text]', form);
+              skillset = qs('#skillset').content.cloneNode(true).firstElementChild,
+              input = qs('input[type=text]', skillset);
 
-        form.name = index;
-        input.value = `Skill Set ${index + 1}`;
-        addFieldset(form);
-        main.insertBefore(fragment, hr);
+        skillset.name = index;
+        input.value = name || `Skill Set ${index + 1}`;
+        addSkill(skillset, name);
+        main.insertBefore(skillset, hr);
         updateChart();
       }
 
-      function removeForm(form) {
-        form.parentElement.removeChild(form);
+      function removeSkillSet(skillset) {
+        skillset.parentElement.removeChild(skillset);
         updateChart();
       }
 
       d.body.addEventListener('click', ({ target }) => {
-        target.matches('[name=add-form]') && addForm();
-        target.matches('[name=remove-form]') && removeForm([...d.forms].pop());
-        target.matches('[name=add-fieldset]') && addFieldset(target.closest('form'));
-        target.matches('[name=remove-fieldset]') && removeFieldset(target.closest('form'));
-        target.matches('[type=radio]') && updateChart();
+        target.matches('[name=add-skillset]') && addSkillSet();
+        target.matches('[name=remove-skillset]') && removeSkillSet([...d.forms].pop());
+        target.matches('[name=add-skill]') && addSkill(target.closest('.skillset'));
+        target.matches('[name=remove-skill]') && removeSkill(target.closest('.skillset'));
+        target.matches('[type=radio]') && updateChart(['data']);
       });
 
       d.body.addEventListener('input', ({ target }) => {
-        target.matches('input[type=text]') && updateChart();
+        target.matches('input[type=text]') && updateChart(['labels']);
       });
 
-      [...Array(5)].forEach(() => addForm());
+      ['Research', 'Information Architecture', 'Content Strategy', 'Prototyping', 'Visual Design', 'Interaction Design'].forEach(name => addSkillSet(name));
       updateChart();
 
     })(document);
