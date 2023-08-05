@@ -19,13 +19,13 @@
       min-height: 100%;
       font-family: sans-serif;
     }
-    main {
+    main, aside, form, .actions {
       gap: 1rem;
     }
-    body, main, label, aside {
+    body, main, td label, aside, form, .actions {
       display: flex;
     }
-    body, main, aside {
+    body, main, aside, form {
       flex-direction: column;
     }
     main {
@@ -33,10 +33,6 @@
     }
     main, aside, pre {
       padding: 1rem;
-    }
-    form > * + *,
-    aside > * + * {
-      margin-top: 1rem;
     }
     table {
       border-collapse: collapse;
@@ -60,14 +56,16 @@
       position: relative;
       z-index: 1;
     }
-    label {
+    label, .actions {
       align-items: center;
+    }
+    label {
       justify-content: center;
     }
     button {
       background: transparent;
     }
-    input[type=text], label, table button {
+    input[type=text], td label, table button {
       width: 100%;
       height: 100%;
     }
@@ -96,7 +94,8 @@
       margin-top: auto;
     }
     .actions {
-      text-align: right;
+      justify-content: flex-end;
+      font-size: .875rem;
     }
     .button {
       padding: .5rem 1rem;
@@ -123,11 +122,15 @@
     </div>
     <small>
       <strong>Note:</strong> Inspired by this <a href="https://www.nngroup.com/articles/skill-mapping/" target="_blank" rel="no-referrer">article</a>.
-      Data is not persisted (yet). Open an <a href="https://github.com/cdeath/cdeath.github.io/issues" target="_blank" rel="no-referrer">issue</a> if you think it's worth it.
+      Data is not persisted (yet). Create an <a href="https://github.com/cdeath/cdeath.github.io/issues" target="_blank" rel="no-referrer">issue</a> if you think it's worth it.
     </small>
   </main>
   <aside>
     <canvas id="chart"></canvas>
+    <div class="actions">
+      <label>transparent <input type="checkbox" name="transparent"></label>
+      <button type="button" class="button" name="download">Download</button>
+    </div>
     <pre></pre>
   </aside>
   <template id="skillset">
@@ -171,7 +174,19 @@
             aside = qs('aside'),
             hr = qs('hr');
 
-      const chart = new Chart(qs('#chart'), {
+      const canvasBackgroundColor = {
+        id: 'background',
+        beforeDraw: (chart, args, { color }) => {
+          const {ctx} = chart;
+          ctx.save();
+          ctx.globalCompositeOperation = 'destination-over';
+          ctx.fillStyle = color || 'white';
+          ctx.fillRect(0, 0, chart.width, chart.height);
+          ctx.restore();
+        }
+      };
+
+      const chart = window.chart = new Chart(qs('#chart'), {
         type: 'radar',
         data: {
           labels: [],
@@ -194,8 +209,16 @@
           },
           plugins: {
             legend: { display: false },
+            title: {
+              display: true,
+              text: 'Skills',
+              font: { size: 20, weight: 'bold' },
+              color: 'black',
+            },
+            background: { color: 'white' },
           },
         },
+        plugins: [canvasBackgroundColor],
       });
 
       function updateChart(what = ['labels', 'data']) {
@@ -211,6 +234,18 @@
         }, []));
         qs('pre').innerHTML = JSON.stringify(chart.data, null, 2);
         chart.update();
+      }
+
+      function setChartBackground(color) {
+        chart.options.plugins.background = { color };
+        chart.update();
+      }
+
+      function downloadChart() {
+        var a = d.createElement('a');
+        a.href = chart.toBase64Image();
+        a.download = 'skill-mapping.png';
+        a.click();
       }
 
       function addSkill(skillset) {
@@ -254,6 +289,8 @@
         target.matches('[name=remove-skillset]') && removeSkillSet([...d.forms].pop());
         target.matches('[name=add-skill]') && addSkill(target.closest('.skillset'));
         target.matches('[name=remove-skill]') && removeSkill(target.closest('.skillset'));
+        target.matches('[name=download]') && downloadChart();
+        target.matches('[name=transparent]') && setChartBackground(target.checked ? 'transparent' : 'white');
         target.matches('[type=radio]') && updateChart(['data']);
       });
 
