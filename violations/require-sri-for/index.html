@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="example.css">
+    <style>
+      .violate-inline {
+        color: navy;
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="violate">blah</p>
+    <p id="violate-inline">asdf</p>
+    <script src="example.js"></script>
+    <script>
+      document.getElementById("violate-inline").innerHTML = "Hello JavaScript!";
+    </script>
+  </body>
+</html>

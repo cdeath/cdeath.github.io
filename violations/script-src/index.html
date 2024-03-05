@@ -1,0 +1,10 @@
+<html>
+  <body>
+    <p id="violate-from-script">blah</p>
+    <p id="violate-inline">asdf</p>
+    <script src="example.js"></script>
+    <script>
+      document.getElementById("violate-inline").innerHTML = "Hello JavaScript!";
+    </script>
+  </body>
+</html>
