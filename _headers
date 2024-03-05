@@ -1,54 +1,54 @@
 
-/violations
+/security-violations
   Content-Security-Policy default-src 'none'; frame-src 'self';
 
-/violations/base-uri
+/security-violations/base-uri
   Content-Security-Policy default-src 'none'; img-src *; base-uri https://example.tld;
 
-/violations/block-all-mixed-content
+/security-violations/block-all-mixed-content
   Content-Security-Policy default-src 'none'; img-src *;
 
-/violations/connect-src
+/security-violations/connect-src
   Content-Security-Policy default-src 'self'; connect-src 'none';
 
-/violations/font-src
+/security-violations/font-src
   Content-Security-Policy default-src 'self'; style-src *; font-src 'none';
 
-/violations/form-action
+/security-violations/form-action
   Content-Security-Policy default-src 'none'; script-src 'unsafe-inline'; form-action 'none';
 
-/violations/frame-ancestors
+/security-violations/frame-ancestors
   Content-Security-Policy default-src 'self'; frame-ancestors 'none';
 
-/violations/frame-src
+/security-violations/frame-src
   Content-Security-Policy default-src 'self'; frame-src 'none';
 
-/violations/img-src
+/security-violations/img-src
   Content-Security-Policy default-src 'none';
 
-/violations/manifest-src
+/security-violations/manifest-src
   Content-Security-Policy default-src 'self'; manifest-src 'none';
 
-/violations/media-src
+/security-violations/media-src
   Content-Security-Policy default-src 'self'; media-src 'none';
 
-/violations/object-src
+/security-violations/object-src
   Content-Security-Policy default-src 'self'; object-src 'none';
 
-/violations/plugin-types
+/security-violations/plugin-types
   Content-Security-Policy default-src 'none'; object-src 'self'; plugin-types application/does-not-exist;
 
-/violations/require-sri-for
+/security-violations/require-sri-for
   Content-Security-Policy require-sri-for script style;
 
-/violations/sandbox
+/security-violations/sandbox
   Content-Security-Policy default-src 'self'; sandbox;
 
-/violations/script-src
+/security-violations/script-src
   Content-Security-Policy default-src 'self'; script-src 'none';
 
-/violations/style-src
+/security-violations/style-src
   Content-Security-Policy default-src 'self'; style-src 'none';
 
-/violations/worker-src
+/security-violations/worker-src
   Content-Security-Policy default-src 'self'; worker-src 'none';
