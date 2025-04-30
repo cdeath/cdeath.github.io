@@ -1,11 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <iframe width="800" height="660" src="https://radar.cloudflare.com/embed/DataExplorerVisualizer?path=http%2Ftimeseries&dateStart=2024-09-30&dateEnd=2024-09-30&mainLocation=6167&timeCompare=2024-09-23&compareWith=174&param_limitPerGroup=10&chartState=%7B%22showAnnotations%22%3Atrue%2C%22xy.hiddenSeries%22%3A%5B%5D%2C%22xy.highlightedSeries%22%3Anull%2C%22xy.previousVisible%22%3Atrue%7D" title="Cloudflare Radar - HTTP requests time series for AS6167 and AS174" loading="lazy"></iframe>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radar Embeds</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      class="cf-radar-embed"
+      width="800"
+      height="745"
+      src="https://ajesus-radar-5358.radar-frontend.pages.dev/embed/BgpRealtimeRoutesSankey?ip=1.1.1.0&mask=24&prefix=1.1.1.0%2F24&widgetState=%7B%7D"
+      title="Cloudflare Radar - Realtime connectivity"
+      loading="lazy"
+      style="border: 0; max-width: 100%"
+    ></iframe>
+    <iframe
+      class="cf-radar-embed"
+      width="800"
+      height="450"
+      src="https://ajesus-radar-5358.radar-frontend.pages.dev/embed/TrafficTrendsXY?location=pt&widgetState=%7B%22showAnnotations%22%3Atrue%2C%22xy.hiddenSeries%22%3A%5B%5D%2C%22xy.highlightedSeries%22%3Anull%2C%22xy.hoveredSeries%22%3Anull%2C%22xy.previousVisible%22%3Atrue%7D"
+      title="Cloudflare Radar - Traffic trends"
+      loading="lazy"
+      style="border: 0; max-width: 100%"
+    ></iframe>
+  </body>
 </html>
