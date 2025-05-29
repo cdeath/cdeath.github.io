@@ -1,3 +1,4 @@
 # cenas
 User-agent: *
 Crawl-delay: 10
+Disallow: /cenas
