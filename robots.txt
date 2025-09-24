@@ -3,6 +3,7 @@ User-agent: *
 Crawl-delay: 10
 Disallow: /cenas
 
+# test
 User-agent: Amazonbot
 Allow: /cenas
 
