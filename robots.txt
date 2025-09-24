@@ -3,4 +3,7 @@ User-agent: *
 Crawl-delay: 10
 Disallow: /cenas
 
+User-agent: Amazonbot
+Allow: /cenas
+
 Sitemap: https://cdeath.dev/sitemap.xml
