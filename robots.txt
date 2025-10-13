@@ -1,6 +1,2 @@
-# cenas
 User-agent: *
-Crawl-delay: 10
-Disallow: /cenas
-
-Sitemap: https://cdeath.dev/sitemap.xml
+Disallow:
