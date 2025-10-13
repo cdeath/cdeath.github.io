@@ -1,10 +1,8 @@
-# cenas
+# START YOAST BLOCK
+# ---------------------------
 User-agent: *
-Crawl-delay: 10
-Disallow: /cenas
+Disallow:
 
-# test
-User-agent: Amazonbot
-Allow: /cenas
-
-Sitemap: https://cdeath.dev/sitemap.xml
+Sitemap: https://recrute.carrefour.fr/sitemap_index.xml
+# ---------------------------
+# END YOAST BLOCK
