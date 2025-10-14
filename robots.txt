@@ -1,8 +1,21 @@
-# START YOAST BLOCK
-# ---------------------------
-User-agent: *
-Disallow:
+Sitemap: https://www.smartuk.net/sitemap.xml
 
-Sitemap: https://recrute.carrefour.fr/sitemap_index.xml
-# ---------------------------
-# END YOAST BLOCK
+User-agent: Googlebot
+Allow: /
+
+User-agent: SiteAuditBot
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: *
+
+Disallow: /*\?add*
+Disallow: /*\?filter*
+Disallow: /*\?per*
+Disallow: /*\?shop*"
+Disallow: /cdn-cgi/zaraz/
