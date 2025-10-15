@@ -13,6 +13,12 @@ User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: *
+Crawl-delay: 10
+Disallow: /*__*
+Disallow: /display/
+Disallow: /embed/*
+Disallow: /scan/*
+Disallow: /api/*
 
 Disallow: /*\?add*
 Disallow: /*\?filter*
