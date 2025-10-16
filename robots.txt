@@ -15,11 +15,7 @@ Allow: /
 User-agent: *
 Crawl-delay: 10
 Disallow: /*__*
-Disallow: /display/
-Disallow: /embed/*
-Disallow: /scan/*
-Disallow: /api/*
-
+Disallow: /security-violations*
 Disallow: /*\?add*
 Disallow: /*\?filter*
 Disallow: /*\?per*
