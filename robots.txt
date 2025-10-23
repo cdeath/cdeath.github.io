@@ -1,15 +1,3 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: SiteAuditBot
-Allow: /
-
-User-agent: SemrushBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: *
 Crawl-delay: 10
 Disallow: /*__*
@@ -19,3 +7,4 @@ Disallow: /*\?filter*
 Disallow: /*\?per*
 Disallow: /*\?shop*"
 Disallow: /cdn-cgi/zaraz/
+Allow: /this-is-the-original-robots-txt
