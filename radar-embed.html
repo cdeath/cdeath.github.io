@@ -11,15 +11,29 @@
         margin: 0;
       }
       body {
+        padding: 2rem 1rem;
         font-family: system-ui, sans-serif;
         width: 100%;
-        max-width: 800px;
+        max-width: 960px;
         margin: 0 auto;
+      }
+      iframe {
+        width: 100%;
+        outline: 1px solid #ddd !important;
+        margin-bottom: 2rem;
+      }
+      h1 {
+        margin-bottom: 2rem;
+      }
+      h2 {
+        margin-bottom: 1rem;
+        font-size: 1rem;
       }
     </style>
   </head>
   <body>
-    larger than it should
+    <h1>Cloudflare Radar embeds test</h1>
+    <h2>Auto-Size (should shrink)</h2>
     <iframe
       class="cf-radar-embed"
       width="800"
@@ -29,7 +43,7 @@
       loading="lazy"
       style="border: 0; max-width: 100%"
     ></iframe>
-    smaller than it should
+    <h2>Auto-Size (should grow)</h2>
     <iframe
       class="cf-radar-embed"
       width="800"
@@ -39,13 +53,23 @@
       loading="lazy"
       style="border: 0; max-width: 100%"
     ></iframe>
-    links
+    <h2>Iframe links (should open in a new tab)</h2>
     <iframe
       class="cf-radar-embed"
       width="800"
-      height="736"
-      src="https://radar.cloudflare.com/embed/TrafficGeoDistribution?widgetState=%7B%7D&ref=%2Ftraffic"
+      height="752"
+      src="https://radar.cloudflare.com/embed/TrafficGeoDistribution?dateStart=2025-10-24&dateEnd=2025-10-27&widgetState=%7B%7D&ref=%2Ftraffic"
       title="Cloudflare Radar - Traffic characteristics"
+      loading="lazy"
+      style="border: 0; max-width: 100%"
+    ></iframe>
+    <h2>Iframe links (should be localized and open in a new tab)</h2>
+    <iframe
+      class="cf-radar-embed"
+      width="800"
+      height="575"
+      src="https://radar.cloudflare.com/embed/BotTrafficByAsTreemap?dateStart=2025-10-24&dateEnd=2025-10-27&locale=pt-PT&widgetState=%7B%7D&ref=%2Fpt-pt%2Fbots"
+      title="Cloudflare Radar - Quota de tráfego de bots por sistema autónomo"
       loading="lazy"
       style="border: 0; max-width: 100%"
     ></iframe>
