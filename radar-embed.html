@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Radar Embeds</title>
     <style>
+      :root {
+        scroll-padding-top: 1rem;
+      }
       * {
         box-sizing: border-box;
         padding: 0;
@@ -33,9 +36,8 @@
   </head>
   <body>
     <h1>Cloudflare Radar embeds test</h1>
-    <h2>Auto-Size (should shrink)</h2>
+    <h2 id="traffic-trends">Auto-Size (should shrink)</h2>
     <iframe
-      id="traffic-trends"
       class="cf-radar-embed"
       width="800"
       height="1000"
@@ -44,9 +46,8 @@
       loading="lazy"
       style="border: 0; max-width: 100%"
     ></iframe>
-    <h2>Auto-Size (should grow)</h2>
+    <h2 id="real-time-bgp">Auto-Size (should grow)</h2>
     <iframe
-      id="real-time-bgp"
       class="cf-radar-embed"
       width="800"
       height="200"
@@ -55,9 +56,8 @@
       loading="lazy"
       style="border: 0; max-width: 100%"
     ></iframe>
-    <h2>Iframe links (should open in a new tab)</h2>
+    <h2 id="traffic-distribution">Iframe links (should open in a new tab)</h2>
     <iframe
-      id="traffic-distribution"
       class="cf-radar-embed"
       width="800"
       height="752"
@@ -66,9 +66,10 @@
       loading="lazy"
       style="border: 0; max-width: 100%"
     ></iframe>
-    <h2>Iframe links (should be localized and open in a new tab)</h2>
+    <h2 id="bot-traffic-by-as">
+      Iframe links (should be localized and open in a new tab)
+    </h2>
     <iframe
-      id="bot-traffic-by-as"
       class="cf-radar-embed"
       width="800"
       height="575"
@@ -77,9 +78,8 @@
       loading="lazy"
       style="border: 0; max-width: 100%"
     ></iframe>
-    <h2>YiR 2025 embed (should be themed)</h2>
+    <h2 id="yir-per-bot-traffic">YiR 2025 embed (should be themed)</h2>
     <iframe
-      id="yir-per-bot-traffic"
       class="cf-radar-embed"
       width="800"
       height="517"
@@ -88,9 +88,10 @@
       loading="lazy"
       style="border: 0; max-width: 100%; background-color: #070033"
     ></iframe>
-    <h2>YiR 2025 localized embed with controls (should change data)</h2>
+    <h2 id="yir-internet-services">
+      YiR 2025 localized embed with controls (should change data)
+    </h2>
     <iframe
-      id="yir-internet-services"
       class="cf-radar-embed"
       width="800"
       height="667"
