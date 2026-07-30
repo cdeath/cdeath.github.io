@@ -109,7 +109,7 @@
     ></iframe>
     <!--script src="https://radar.cloudflare.com/embed/auto-size.js"></script-->
     <script>
-      ((w, d, o, q = `iframe[src^="${o}/embed"]`, s) =>
+      ((w, d, o, q = `iframe[src^="${o}/embed"]`) =>
         w.cfRadar ||
         (w.addEventListener(
           "message",
@@ -121,12 +121,12 @@
               ),
             ),
         ),
-        (w.cfRadar = s =
-          () => d.querySelectorAll(q).forEach((f) => (f.scrolling = "no")))(),
-        new MutationObserver(s).observe(d.documentElement, {
-          childList: 1,
-          subtree: 1,
-        })))(window, document, "https://radar.cloudflare.com");
+        (w.cfRadar = () =>
+          d.querySelectorAll(q).forEach((f) => (f.scrolling = "no")))()))(
+        window,
+        document,
+        "https://radar.cloudflare.com",
+      );
     </script>
   </body>
 </html>
