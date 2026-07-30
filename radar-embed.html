@@ -115,7 +115,7 @@
           "message",
           (e) =>
             (e.origin === o) & (e.data.event === "setIframeHeight") &&
-            ((f) => f && (f.height = e.data.height))(
+            ((f) => f && ((f.scrolling = "no"), (f.height = e.data.height)))(
               [...d.querySelectorAll(q)].find(
                 (f) => f.contentWindow === e.source,
               ),
