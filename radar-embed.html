@@ -107,26 +107,6 @@
       loading="lazy"
       style="border: 0; max-width: 100%; background-color: #070033"
     ></iframe>
-    <!--script src="https://radar.cloudflare.com/embed/auto-size.js"></script-->
-    <script>
-      ((w, d, o, q = `iframe[src^="${o}/embed"]`) =>
-        w.cfRadar ||
-        (w.addEventListener(
-          "message",
-          (e) =>
-            (e.origin === o) & (e.data.event === "setIframeHeight") &&
-            ((f) => f && ((f.scrolling = "no"), (f.height = e.data.height)))(
-              [...d.querySelectorAll(q)].find(
-                (f) => f.contentWindow === e.source,
-              ),
-            ),
-        ),
-        (w.cfRadar = () =>
-          d.querySelectorAll(q).forEach((f) => (f.scrolling = "no")))()))(
-        window,
-        document,
-        "https://radar.cloudflare.com",
-      );
-    </script>
+    <script src="https://radar.cloudflare.com/embed/auto-fix.js"></script>
   </body>
 </html>
