@@ -93,7 +93,6 @@
       title="Cloudflare Radar - Verified Bot Traffic Trends"
       loading="lazy"
       frameborder="0"
-      scrolling="no"
       style="border: 0; max-width: 100%; background-color: #070033"
     ></iframe>
     <h2 id="yir-internet-services">
@@ -108,6 +107,26 @@
       loading="lazy"
       style="border: 0; max-width: 100%; background-color: #070033"
     ></iframe>
-    <script src="https://radar.cloudflare.com/embed/auto-size.js"></script>
+    <!--script src="https://radar.cloudflare.com/embed/auto-size.js"></script-->
+    <script>
+      ((w, d, o, q = `iframe[src^="${o}/embed"]`, s) =>
+        w.cfRadar ||
+        (w.addEventListener(
+          "message",
+          (e) =>
+            (e.origin === o) & (e.data.event === "setIframeHeight") &&
+            ((f) => f && (f.height = e.data.height))(
+              [...d.querySelectorAll(q)].find(
+                (f) => f.contentWindow === e.source,
+              ),
+            ),
+        ),
+        (w.cfRadar = s =
+          () => d.querySelectorAll(q).forEach((f) => (f.scrolling = "no")))(),
+        new MutationObserver(s).observe(d.documentElement, {
+          childList: 1,
+          subtree: 1,
+        })))(window, document, "https://radar.cloudflare.com");
+    </script>
   </body>
 </html>
